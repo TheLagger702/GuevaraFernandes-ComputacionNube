@@ -30,6 +30,7 @@ def get_status():
 def CrearUsuario():
    try:
        data= request.get_json()
+       return make_response(Usuarios(nombre_usuario=data['nombre_usuario'],correos_usuario= data['correos_usuario'] ), 200)
        usuario= Usuarios(nombre_usuario=data['nombre_usuario'],correos_usuario= data['correos_usuario'] )
        db.session.add(usuario)
        db.session.commit()
@@ -51,7 +52,7 @@ def ObtenerUsuarios():
 @app.route('/usuarios/<int:id>', methods = ['GET'])
 def ObtenerUsuario(id):
    try:
-       usuario= Usuarios.query.filter_by(id=id).first()
+       usuario= Usuarios.query.get(id)
        return make_response(jsonify({'usuario':usuario.json()}),200)     
    except Exception:
        return make_response(jsonify({'mensaje':'usuario no encontrado'}),500)
@@ -60,7 +61,7 @@ def ObtenerUsuario(id):
 @app.route('/directories/<int:id>', methods = ['PUT'])
 def ActualizarUsuario(id):
    try:
-       usuario= Usuarios.query.filter_by(id=id).first()
+       usuario= Usuarios.query.get(id)
        if usuario:
         data= request.get_json()
         usuario.nombre_usuario = data['nombre_usuario']
@@ -75,7 +76,7 @@ def ActualizarUsuario(id):
 @app.route('/directories', methods = ['PATCH'])
 def ActualizarParcialUsuario(id):
    try:
-       usuario= Usuarios.query.filter_by(id=id).first()
+       usuario= Usuarios.query.get(id)
        if usuario:
         data= request.get_json()
         if data['nombre_usuario']:
@@ -91,7 +92,7 @@ def ActualizarParcialUsuario(id):
 @app.route('/directories', methods = ['DELETE'])
 def EliminarUsuario(id):
    try:
-       usuario= Usuarios.query.filter_by(id=id).first()
+       usuario= Usuarios.query.get(id)
        if usuario:
         db.session.delete(usuario)
         db.session.commit()
