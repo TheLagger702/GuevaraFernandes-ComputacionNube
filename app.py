@@ -56,3 +56,46 @@ def ObtenerUsuario(id):
    except Exception:
        return make_response(jsonify({'mensaje':'usuario no encontrado'}),500)
    
+
+@app.route('/directories/<int:id>', methods = ['PUT'])
+def ActualizarUsuario(id):
+   try:
+       usuario= Usuarios.query.filter_by(id=id).first()
+       if usuario:
+        data= request.get_json()
+        usuario.nombre_usuario = data['nombre_usuario']
+        usuario.correos_usuario = data['correos_usuario']
+        db.session.commit()
+        return make_response(jsonify({'mensaje':'usuario actualizado'}),200)
+       return make_response(jsonify({'mensaje':'usuario no encontrado'}),404)
+
+   except Exception:
+       return make_response(jsonify({'mensaje':'error actualizando el usuario'}),500)
+   
+@app.route('/directories', methods = ['PATCH'])
+def ActualizarParcialUsuario(id):
+   try:
+       usuario= Usuarios.query.filter_by(id=id).first()
+       if usuario:
+        data= request.get_json()
+        if data['nombre_usuario']:
+            usuario.nombre_usuario = data['nombre_usuario']
+        if data['correos_usuario']:
+            usuario.correos_usuario = data['correos_usuario']
+        db.session.commit()
+        return make_response(jsonify({'mensaje':'usuario eliminado'}),200)
+       return make_response(jsonify({'mensaje':'usuario no encontrado'}),404)
+   except Exception:
+       return make_response(jsonify({'mensaje':'error eliminando el usuario'}),500)
+
+@app.route('/directories', methods = ['DELETE'])
+def EliminarUsuario(id):
+   try:
+       usuario= Usuarios.query.filter_by(id=id).first()
+       if usuario:
+        db.session.delete(usuario)
+        db.session.commit()
+        return make_response(jsonify({'mensaje':'usuario eliminado'}),200)
+       return make_response(jsonify({'mensaje':'usuario no encontrado'}),404)
+   except Exception:
+       return make_response(jsonify({'mensaje':'error eliminando el usuario'}),500)
