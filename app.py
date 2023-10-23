@@ -16,8 +16,8 @@ class Usuarios(db.Model):
     def serialize(self):
          return {
             'id': self.id,
-            'name': self.name,
-            'emails': list(self.emails)
+            'nombre_usuario': self.nombre_usuario,
+            'correos_usuario': self.correos_usuario
         }
 with app.app_context():
     db.create_all()
@@ -30,7 +30,6 @@ def get_status():
 def CrearUsuario():
    try:
        data= request.get_json()
-       return make_response(Usuarios(nombre_usuario=data['nombre_usuario'],correos_usuario= data['correos_usuario'] ), 200)
        usuario= Usuarios(nombre_usuario=data['nombre_usuario'],correos_usuario= data['correos_usuario'] )
        db.session.add(usuario)
        db.session.commit()
@@ -44,7 +43,7 @@ def ObtenerUsuarios():
        usuarios= Usuarios.query.all()
        #return make_response(usuarios,200)
        if len(usuarios):
-           return make_response(jsonify({'usuarios':[usuarios.json for usuario in usuarios]}),200)
+           return make_response(jsonify({'usuarios':[usuario.serialize() for usuario in usuarios]}),200)
        return make_response(jsonify({'mensaje':'usuarios no encontrados'}),404)     
    except Exception:
        return make_response(jsonify({'mensaje':'error obteniendo a los usuarios'}),500)
