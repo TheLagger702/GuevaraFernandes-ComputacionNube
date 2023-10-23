@@ -41,7 +41,7 @@ def CrearUsuario():
 def ObtenerUsuarios():
    try:
        usuarios= Usuarios.query.all()
-       #return make_response(usuarios,200)
+       return make_response(usuarios,200)
        if len(usuarios):
            return make_response(
                jsonify({
