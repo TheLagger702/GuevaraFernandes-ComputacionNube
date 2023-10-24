@@ -11,7 +11,7 @@ class Usuarios(db.Model):
 
     id = db.Column(db.Integer,primary_key=True) 
     nombre_usuario = db.Column(db.String(30),unique=True, nullable=False)
-    correos_usuario = db.Column(db.ARRAY(db.String(30)),unique=True, nullable=False) 
+    correos_usuario = db.Column(db.ARRAY(db.String(50)),unique=True, nullable=False) 
 
     def serialize(self):
          return {
@@ -42,7 +42,10 @@ def ObtenerUsuarios():
    try:
        usuarios= Usuarios.query.all()
        if len(usuarios):
-           return make_response(jsonify({'usuarios':[usuario.serialize() for usuario in usuarios]}),200)
+           return make_response(jsonify({
+               
+               'usuarios':[usuario.serialize() for usuario in usuarios]
+            }),200)
        return make_response(jsonify({'mensaje':'usuarios no encontrados'}),404)     
    except Exception:
        return make_response(jsonify({'mensaje':'error obteniendo a los usuarios'}),500)
@@ -77,15 +80,15 @@ def ActualizarParcialUsuario(id):
        usuario= Usuarios.query.get(id)
        if usuario:
         data= request.get_json()
-        if data['nombre_usuario']:
+        if 'nombre_usuario' in data:
             usuario.nombre_usuario = data['nombre_usuario']
-        if data['correos_usuario']:
+        if 'correos_usuario' in data:
             usuario.correos_usuario = data['correos_usuario']
         db.session.commit()
         return make_response(jsonify({'mensaje':'usuario eliminado'}),200)
        return make_response(jsonify({'mensaje':'usuario no encontrado'}),404)
    except Exception:
-       return make_response(jsonify({'mensaje':'error eliminando el usuario'}),500)
+       return make_response(jsonify({'mensaje':'error actualizando el usuario'}),500)
 
 @app.route('/directories/<int:id>', methods = ['DELETE'])
 def EliminarUsuario(id):
