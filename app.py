@@ -22,11 +22,11 @@ class Usuarios(db.Model):
 with app.app_context():
     db.create_all()
 
-@app.route('/status/', methods=['GET']) #probado
+@app.route('/status/', methods=['GET'])
 def get_status():
     return make_response(jsonify({'message:':'pong'}),200)
 
-@app.route('/usuarios', methods = ['POST']) #probado
+@app.route('/directories', methods = ['POST']) 
 def CrearUsuario():
    try:
        data= request.get_json()
@@ -37,7 +37,7 @@ def CrearUsuario():
    except Exception:
        return make_response(jsonify({'mensaje':'error creando el usuario'}),500)
 
-@app.route('/usuarios', methods = ['GET'])
+@app.route('/directories', methods = ['GET'])
 def ObtenerUsuarios():
    try:
        usuarios= Usuarios.query.all()
@@ -52,7 +52,7 @@ def ObtenerUsuarios():
    except Exception:
        return make_response(jsonify({'mensaje':'error obteniendo a los usuarios'}),500)
 
-@app.route('/usuarios/<int:id>', methods = ['GET'])
+@app.route('/directories/<int:id>', methods = ['GET'])
 def ObtenerUsuario(id):
    try:
        usuario= Usuarios.query.get(id)
