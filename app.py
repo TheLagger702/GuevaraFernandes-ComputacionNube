@@ -43,7 +43,9 @@ def ObtenerUsuarios():
        usuarios= Usuarios.query.all()
        if len(usuarios):
            return make_response(jsonify({
-               
+               'cantidad':len(usuarios),
+               'proximo':"link a siguiente página",
+               'anterior':"link a página previa",
                'usuarios':[usuario.serialize() for usuario in usuarios]
             }),200)
        return make_response(jsonify({'mensaje':'usuarios no encontrados'}),404)     
@@ -85,7 +87,7 @@ def ActualizarParcialUsuario(id):
         if 'correos_usuario' in data:
             usuario.correos_usuario = data['correos_usuario']
         db.session.commit()
-        return make_response(jsonify({'mensaje':'usuario eliminado'}),200)
+        return make_response(jsonify({'mensaje':'usuario actualizado'}),200)
        return make_response(jsonify({'mensaje':'usuario no encontrado'}),404)
    except Exception:
        return make_response(jsonify({'mensaje':'error actualizando el usuario'}),500)
