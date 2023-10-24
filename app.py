@@ -41,7 +41,6 @@ def CrearUsuario():
 def ObtenerUsuarios():
    try:
        usuarios= Usuarios.query.all()
-       #return make_response(usuarios,200)
        if len(usuarios):
            return make_response(jsonify({'usuarios':[usuario.serialize() for usuario in usuarios]}),200)
        return make_response(jsonify({'mensaje':'usuarios no encontrados'}),404)     
@@ -52,9 +51,9 @@ def ObtenerUsuarios():
 def ObtenerUsuario(id):
    try:
        usuario= Usuarios.query.get(id)
-       return make_response(jsonify({'usuario':usuario.json()}),200)     
+       return make_response(jsonify({'usuario':usuario.serialize()}),200)     
    except Exception:
-       return make_response(jsonify({'mensaje':'usuario no encontrado'}),500)
+       return make_response(jsonify({'mensaje':'error obteniendo al usuario'}),500)
    
 
 @app.route('/directories/<int:id>', methods = ['PUT'])
@@ -72,7 +71,7 @@ def ActualizarUsuario(id):
    except Exception:
        return make_response(jsonify({'mensaje':'error actualizando el usuario'}),500)
    
-@app.route('/directories', methods = ['PATCH'])
+@app.route('/directories/<int:id>', methods = ['PATCH'])
 def ActualizarParcialUsuario(id):
    try:
        usuario= Usuarios.query.get(id)
@@ -88,7 +87,7 @@ def ActualizarParcialUsuario(id):
    except Exception:
        return make_response(jsonify({'mensaje':'error eliminando el usuario'}),500)
 
-@app.route('/directories', methods = ['DELETE'])
+@app.route('/directories/<int:id>', methods = ['DELETE'])
 def EliminarUsuario(id):
    try:
        usuario= Usuarios.query.get(id)
