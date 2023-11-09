@@ -9,9 +9,9 @@ services:
       - "5432:5432"
     restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=myuser
+      - POSTGRES_DB=mydb
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -25,7 +25,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      DB_URL: postgresql://postgres:postgres@flask_db:5432/postgres
+      DB_URL: postgresql://myuser:myuser@flask_db:5432/mydb
     depends_on:
       flask_db: 
             condition: service_healthy
