@@ -1,0 +1,37 @@
+version: "3.9"
+
+services:
+
+  flask_db:
+    container_name: flask_db
+    image: postgres:12
+    ports: 
+      - "5432:5432"
+    restart: always
+    environment:
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=myuser
+      - POSTGRES_DB=mydb
+    volumes:
+      - type: bind
+        source: "/data/gv0/vols/guevarafernandes-computacionnube"
+        target: "/var/lib/postgresql/data"
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      start_period: 10s
+
+  flask_app:
+    container_name: flask_app
+    build: .
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      DB_URL: postgresql://myuser:myuser@flask_db:5432/mydb
+    depends_on:
+      flask_db: 
+            condition: service_healthy
+            restart: true
+    
+volumes:
+  pgdata: {}
