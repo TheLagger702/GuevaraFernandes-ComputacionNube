@@ -1,0 +1,6 @@
+APP_NAME='guevarafernandes'
+DB_NAME='mydb'
+DB_USR='myuser'
+DB_PWD='myuser'
+DOMAIN_NAME='guevarafernandes.okd-dev.ucab.edu.ve'
+PROJECT_NAME='pj-laguevara-20'
