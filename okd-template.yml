@@ -200,8 +200,6 @@ objects:
             - image: 'c17fernandes/guevarafernandes-computacionnube'
               imagePullPolicy: Always
               name: flask-app
-              args:
-                - flask-app
               env:
                 - name: DB_URL
                   valueFrom:
