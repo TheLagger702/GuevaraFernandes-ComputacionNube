@@ -47,7 +47,7 @@ objects:
       db_pwd: '${DB_PWD}'
       db_usr: '${DB_USR}'
       db_name: '${DB_NAME}'
-      db_url: 'postgresql://${DB_USR}:${DB_PWD}@${APP_NAME}-flask_db.${PROJECT_NAME}.svc:5432/${DB_NAME}'
+      db_url: 'postgresql://${DB_USR}:${DB_PWD}@${APP_NAME}-flask-db.${PROJECT_NAME}.svc:5432/${DB_NAME}'
 
   - kind: Service
     apiVersion: v1
@@ -83,7 +83,7 @@ objects:
   - apiVersion: v1
     kind: Service
     metadata:
-      name: '${APP_NAME}-flask_db'
+      name: '${APP_NAME}-flask-db'
     spec:
       type: ClusterIP
       ports:
@@ -92,22 +92,22 @@ objects:
           protocol: TCP
           targetPort: 5432
       selector:
-        name: '${APP_NAME}-flask_db'
+        name: '${APP_NAME}-flask-db'
 
   - apiVersion: apps.openshift.io/v1
     kind: DeploymentConfig
     metadata:
-      name: '${APP_NAME}-flask_db'
+      name: '${APP_NAME}-flask-db'
     spec:
       replicas: 1
       selector:
-        name: ${APP_NAME}-flask_db
+        name: ${APP_NAME}-flask-db
       strategy:
         type: Recreate
       template:
         metadata:
           labels:
-            name: "${APP_NAME}-flask_db"
+            name: "${APP_NAME}-flask-db"
         spec:
           containers:
             - env:
